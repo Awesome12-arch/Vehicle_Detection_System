@@ -1,0 +1,30 @@
+# === Core AI and Deep Learning ===
+tensorflow==2.11.0
+keras==2.11.0
+torch
+torchvision
+torchaudio
+
+# === Computer Vision and OCR ===
+opencv-python
+easyocr
+imutils
+
+# === Image and Data Utilities ===
+numpy
+pandas
+matplotlib
+scikit-learn
+Pillow
+
+# === Web and API ===
+flask
+flask-cors
+requests
+
+# === Database ===
+sqlite3-binary
+
+# === Miscellaneous ===
+tqdm
+colorama
