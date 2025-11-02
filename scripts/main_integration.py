@@ -107,6 +107,22 @@ def init_db():
     conn.commit()
     conn.close()
 
+def init_vehicle_logs():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS vehicle_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            number_plate TEXT,
+            vehicle_type TEXT,
+            confidence REAL,
+            timestamp TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+
 def save_record(number, vehicle_model, color, category):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -119,11 +135,25 @@ def save_record(number, vehicle_model, color, category):
     conn.close()
     print(f"✅ Record saved: {number}, {vehicle_model}, {color}, {category}\n")
 
+def save_log(number_plate, vehicle_type, confidence):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+        INSERT INTO vehicle_logs (number_plate, vehicle_type, confidence, timestamp)
+        VALUES (?, ?, ?, ?)
+    """, (number_plate, vehicle_type, confidence, timestamp))
+    conn.commit()
+    conn.close()
+    print(f"📝 Log saved: {number_plate}, {vehicle_type}, {confidence:.2f}")
+
+
 # ================================
 # Main Integration
 # ================================
 if __name__ == "__main__":
     init_db()
+    init_vehicle_logs()
 
     # Run OCR
     number_plate = run_ocr(IMAGE_PATH)
@@ -141,3 +171,4 @@ if __name__ == "__main__":
     save_record(number_plate, vehicle_model, color, category)
 
     print("✅ All processes completed successfully!")
+
