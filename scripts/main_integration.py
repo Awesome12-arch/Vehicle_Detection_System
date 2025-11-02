@@ -171,4 +171,3 @@ if __name__ == "__main__":
     save_record(number_plate, vehicle_model, color, category)
 
     print("✅ All processes completed successfully!")
-
