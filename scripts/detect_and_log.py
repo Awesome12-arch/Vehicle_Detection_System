@@ -23,23 +23,42 @@ def init_vehicle_records():
             vehicle_model TEXT,
             color TEXT,
             category TEXT,
+<<<<<<< HEAD
+=======
+            image_path TEXT,
+>>>>>>> 2c42e26 (Updated Jetson deployment - detect_and_log integration and database setup)
             timestamp TEXT
         )
     """)
     conn.commit()
     conn.close()
 
+<<<<<<< HEAD
 def save_vehicle_record(number, vehicle_model, color, category):
+=======
+
+def save_vehicle_record(number, vehicle_model, color, category, image_path):
+>>>>>>> 2c42e26 (Updated Jetson deployment - detect_and_log integration and database setup)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute("""
+<<<<<<< HEAD
         INSERT INTO vehicle_records (number, vehicle_model, color, category, timestamp)
         VALUES (?, ?, ?, ?, ?)
     """, (number, vehicle_model, color, category, timestamp))
     conn.commit()
     conn.close()
     print(f"✅ Record saved to vehicle_records: {number}, {vehicle_model}, {color}, {category}")
+=======
+        INSERT INTO vehicle_records (number, vehicle_model, color, category, image_path, timestamp)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (number, vehicle_model, color, category, image_path, timestamp))
+    conn.commit()
+    conn.close()
+    print(f"✅ Record saved: {number}, {vehicle_model}, {color}, {category}, {os.path.basename(image_path)}")
+
+>>>>>>> 2c42e26 (Updated Jetson deployment - detect_and_log integration and database setup)
 
 # === Initialize model, OCR, and DB ===
 print("🚀 Initializing system...")
@@ -128,7 +147,11 @@ try:
                         vehicle_model = label
                         color = "Unknown"  # optional — can be upgraded later
                         category = "Teacher" if number_plate.startswith("MH12A") else "Student"
+<<<<<<< HEAD
                         save_vehicle_record(number_plate, vehicle_model, color, category)
+=======
+                        save_vehicle_record(number_plate, vehicle_model, color, category, save_path)
+>>>>>>> 2c42e26 (Updated Jetson deployment - detect_and_log integration and database setup)
 
                 # Save annotated output
                 save_path = os.path.join(OUTPUT_DIR, f"detected_{datetime.now().strftime('%H%M%S')}.jpg")
@@ -146,3 +169,7 @@ finally:
         cap.release()
     conn.close()
     print("✅ Resources released. Goodbye!")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2c42e26 (Updated Jetson deployment - detect_and_log integration and database setup)

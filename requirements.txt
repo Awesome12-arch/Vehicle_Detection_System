@@ -1,3 +1,32 @@
+# Core AI & ML dependencies
+torch==2.8.0
+torchvision==0.19.0
+torchaudio==2.8.0
+
+# Image processing and computer vision
+opencv-python==4.9.0.80
+numpy==1.26.4
+Pillow==10.4.0
+
+# Flask web app (for UI / API)
+Flask==3.0.3
+Werkzeug==3.0.3
+
+# Database and utilities
+SQLAlchemy==2.0.31
+pandas==2.2.3
+
+# Model and visualization helpers
+matplotlib==3.9.2
+seaborn==0.13.2
+
+# Object detection frameworks (YOLO compatible)
+ultralytics==8.1.28
+tqdm==4.66.4
+
+# System-level and Jetson specific
+jetson-stats==4.2.4
+pycuda==2024.1
 # === Core AI and Deep Learning ===
 tensorflow==2.11.0
 keras==2.11.0
@@ -21,9 +50,6 @@ Pillow
 flask
 flask-cors
 requests
-
-# === Database ===
-sqlite3-binary
 
 # === Miscellaneous ===
 tqdm
