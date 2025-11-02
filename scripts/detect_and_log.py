@@ -12,6 +12,35 @@ DB_PATH = "/home/jetson-orin/Vehicle_Detection_System/vehicle_records.db"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+# === Additional database setup for vehicle_records ===
+def init_vehicle_records():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS vehicle_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            number TEXT,
+            vehicle_model TEXT,
+            color TEXT,
+            category TEXT,
+            timestamp TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def save_vehicle_record(number, vehicle_model, color, category):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute("""
+        INSERT INTO vehicle_records (number, vehicle_model, color, category, timestamp)
+        VALUES (?, ?, ?, ?, ?)
+    """, (number, vehicle_model, color, category, timestamp))
+    conn.commit()
+    conn.close()
+    print(f"✅ Record saved to vehicle_records: {number}, {vehicle_model}, {color}, {category}")
+
 # === Initialize model, OCR, and DB ===
 print("🚀 Initializing system...")
 
@@ -34,6 +63,9 @@ CREATE TABLE IF NOT EXISTS vehicle_logs (
 """)
 conn.commit()
 print("✅ Database connected successfully")
+
+# Initialize vehicle_records table
+init_vehicle_records()
 
 # === Use camera or test image ===
 USE_IMAGE = False  # 🔁 Change to True if you want to test a static image
@@ -91,6 +123,12 @@ try:
                         conn.commit()
 
                         print(f"✅ Detected: {number_plate} | {label} | {conf:.2f} | {timestamp}")
+
+                        # --- Save detailed record automatically ---
+                        vehicle_model = label
+                        color = "Unknown"  # optional — can be upgraded later
+                        category = "Teacher" if number_plate.startswith("MH12A") else "Student"
+                        save_vehicle_record(number_plate, vehicle_model, color, category)
 
                 # Save annotated output
                 save_path = os.path.join(OUTPUT_DIR, f"detected_{datetime.now().strftime('%H%M%S')}.jpg")
